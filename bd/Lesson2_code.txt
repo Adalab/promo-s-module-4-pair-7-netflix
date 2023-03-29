@@ -1,0 +1,42 @@
+-- Dump completed on 2023-03-28 10:05:36
+
+SELECT * FROM netflix;
+
+SELECT * FROM movies;
+SELECT title, gender FROM movies
+WHERE year > '1990';
+SELECT title FROM movies
+WHERE category = "Top 10";
+
+SELECT id_movies FROM movies
+WHERE title = "La vita è bella";
+
+-- subquery
+UPDATE movies SET year = "1997"
+WHERE id_movies = (SELECT id_movies FROM movies WHERE title="La vita è bella");
+
+SELECT * FROM actors;
+
+SELECT name, lastname, country FROM actors
+WHERE birthday LIKE "195%";
+SELECT name, lastname, country FROM actors
+WHERE birthday BETWEEN "1950-01-01" AND "1960-12-31";
+
+SELECT name, lastname FROM actors
+WHERE country IN ("Estados Unidos");
+
+SELECT * FROM users; 
+
+DELETE FROM users 
+WHERE name LIKE "M%";
+
+SELECT * FROM users; 
+
+DELETE FROM users 
+WHERE id_user = (SELECT id_user FROM users WHERE name LIKE "M%");
+
+SELECT id_user FROM users
+WHERE name LIKE "M%";
+
+DELETE FROM users
+WHERE id_user = 2;
