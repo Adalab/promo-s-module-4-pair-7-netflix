@@ -39,6 +39,10 @@ mysql
     console.error('Error de configuración: ' + err.stack);
   });
 
+const genreFilterParam = param.genre;
+const sortFilterParam = param.sort;
+
+
 server.get('/movies', (req, res) => {
   console.log('Pidiendo a la base de datos información de las peliculas.');
   connection
