@@ -1,6 +1,6 @@
-const express = require('express');
-const cors = require('cors');
-const mysql = require('mysql2/promise');
+const express = require("express");
+const cors = require("cors");
+const mysql = require("mysql2/promise");
 
 // create and config server
 const server = express();
@@ -13,49 +13,47 @@ server.listen(serverPort, () => {
   console.log(`Server listening at http://localhost:${serverPort}`);
 });
 
-
-
-let connection;  // Aquí almacenaremos la conexión a la base de datos
+let connection; // Aquí almacenaremos la conexión a la base de datos
 
 mysql
   .createConnection({
-    host: 'localhost',
-    database: 'netflix',
-    user: 'root',
-    password: 'Puggy1dwbh7',
+    host: "localhost",
+    database: "netflix",
+    user: "root",
+    password: "Puggy1dwbh7",
   })
-  .then(conn => {
+  .then((conn) => {
     connection = conn;
     connection
       .connect()
       .then(() => {
-        console.log(`Conexión establecida con la base de datos (identificador=${connection.threadId})`);
+        console.log(
+          `Conexión establecida con la base de datos (identificador=${connection.threadId})`
+        );
       })
       .catch((err) => {
-        console.error('Error de conexion: ' + err.stack);
+        console.error("Error de conexion: " + err.stack);
       });
   })
   .catch((err) => {
-    console.error('Error de configuración: ' + err.stack);
+    console.error("Error de configuración: " + err.stack);
   });
 
-const genreFilterParam = param.genre;
-const sortFilterParam = param.sort;
-
-
-server.get('/movies', (req, res) => {
-  console.log('Pidiendo a la base de datos información de las peliculas.');
+server.get("/movies", (req, res) => {
+  let genreFilterParam = param.genre;
+  const sortFilterParam = param.sort;
+  let sql = `SELECT * FROM Movies WHERE genre LIKE ? ORDER BY title ${sortFilterParam}`;
   connection
-    .query('SELECT * FROM movies')
+    .query(sql, [genreFilterParam])
     .then(([results, fields]) => {
-      console.log('Información recuperada:');
+      console.log("Información recuperada:");
       results.forEach((result) => {
         console.log(result);
       });
 
       res.json({
         success: true,
-        movies: results
+        movies: results,
       });
     })
     .catch((err) => {
