@@ -40,11 +40,15 @@ mysql
   });
 
 server.get("/movies", (req, res) => {
-  let genreFilterParam = param.genre;
-  const sortFilterParam = param.sort;
-  let sql = `SELECT * FROM Movies WHERE genre LIKE ? ORDER BY title ${sortFilterParam}`;
+  let genreFilterParam = req.query.genre;
+  const sortFilterParam = req.query.sort;
+  console.log(sortFilterParam)
+  // let sql = `SELECT * FROM Movies WHERE genre LIKE ? ORDER BY title ${sortFilterParam}`;
+  if (genreFilterParam === '') {
+    genreFilterParam = '%';
+  }
   connection
-    .query(sql, [genreFilterParam])
+    .query(`SELECT * FROM Movies WHERE genre LIKE ? ORDER BY title ${sortFilterParam}`, [genreFilterParam])
     .then(([results, fields]) => {
       console.log("Información recuperada:");
       results.forEach((result) => {
