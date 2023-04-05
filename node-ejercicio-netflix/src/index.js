@@ -64,3 +64,34 @@ server.get("/movies", (req, res) => {
       throw err;
     });
 });
+
+server.post('/login', (req, res) => {
+  console.log(req.body);
+  const email = req.body.email;
+  const password = req.body.password;
+  connection
+    .query(`SELECT * FROM Users WHERE email = ? AND password = ?`, [
+      email,
+      password,
+    ])
+    .then(([results, fields]) => {
+      console.log('Información recuperada:');
+      console.log('resultados', results);
+      if (results.length) {
+        console.log('true');
+        res.json({
+          success: true,
+          userId: results[0].id_user,
+        });
+      } else {
+        console.log('false');
+        res.json({
+          success: false,
+          errorMessage: 'Usuaria/o no encontrada/o',
+        });
+      }
+    })
+    .catch((err) => {
+      throw err;
+    });
+});
