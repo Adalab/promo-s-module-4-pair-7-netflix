@@ -13,6 +13,8 @@ server.listen(serverPort, () => {
   console.log(`Server listening at http://localhost:${serverPort}`);
 });
 
+server.set("view engine", "ejs");
+
 let connection; // Aquí almacenaremos la conexión a la base de datos
 
 mysql
@@ -42,13 +44,16 @@ mysql
 server.get("/movies", (req, res) => {
   let genreFilterParam = req.query.genre;
   const sortFilterParam = req.query.sort;
-  console.log(sortFilterParam)
+  console.log(sortFilterParam);
   // let sql = `SELECT * FROM Movies WHERE genre LIKE ? ORDER BY title ${sortFilterParam}`;
-  if (genreFilterParam === '') {
-    genreFilterParam = '%';
+  if (genreFilterParam === "") {
+    genreFilterParam = "%";
   }
   connection
-    .query(`SELECT * FROM Movies WHERE genre LIKE ? ORDER BY title ${sortFilterParam}`, [genreFilterParam])
+    .query(
+      `SELECT * FROM Movies WHERE genre LIKE ? ORDER BY title ${sortFilterParam}`,
+      [genreFilterParam]
+    )
     .then(([results, fields]) => {
       console.log("Información recuperada:");
       results.forEach((result) => {
@@ -65,7 +70,7 @@ server.get("/movies", (req, res) => {
     });
 });
 
-server.post('/login', (req, res) => {
+server.post("/login", (req, res) => {
   console.log(req.body);
   const email = req.body.email;
   const password = req.body.password;
@@ -75,19 +80,19 @@ server.post('/login', (req, res) => {
       password,
     ])
     .then(([results, fields]) => {
-      console.log('Información recuperada:');
-      console.log('resultados', results);
+      console.log("Información recuperada:");
+      console.log("resultados", results);
       if (results.length) {
-        console.log('true');
+        console.log("true");
         res.json({
           success: true,
           userId: results[0].id_user,
         });
       } else {
-        console.log('false');
+        console.log("false");
         res.json({
           success: false,
-          errorMessage: 'Usuaria/o no encontrada/o',
+          errorMessage: "Usuaria/o no encontrada/o",
         });
       }
     })
@@ -95,3 +100,20 @@ server.post('/login', (req, res) => {
       throw err;
     });
 });
+
+server.get("/movie/:movieId", (req, res) => {
+  console.log(req.params.movieId);
+  const sql = `SELECT * FROM Movies WHERE id_movies = ?`;
+  connection
+    .query(sql, [req.params.movieId])
+    .then(([results, fields]) => {
+      res.render("movie", results[0]);
+    })
+    .catch((err) => {
+      throw err;
+    });
+});
+
+server.use(express.static("./src/public-react/"));
+server.use(express.static("./src/public-movies-css"));
+server.use(express.static("./src/public-movies-images"));
