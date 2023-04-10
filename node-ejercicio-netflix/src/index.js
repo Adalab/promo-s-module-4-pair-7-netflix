@@ -13,9 +13,46 @@ server.listen(serverPort, () => {
   console.log(`Server listening at http://localhost:${serverPort}`);
 });
 
+const dbConnect = require('../config/connection');
+dbConnect(); //ejecuta la función
+
+const Movies = require('../models/movies');
+
+server.post('/create', (req, res) => {
+  const newMovie = req.body;
+  Movies.create(newMovie)
+    .then((doc) => {
+      res.json(doc);
+    })
+    .catch((error) => {
+      console.log('Error', error);
+    });
+})
+
+server.get('/movies_all_mongo', (req, res) => {
+  let genreFilterParam = req.query.genre;
+  const sortFilterParam = req.query.sort;
+  if (genreFilterParam === "") {
+    genreFilterParam = "%";
+  }
+  Movies
+    .find({})
+    .sort({ title: 'asc' })
+    .then((doc) => {
+      res.json({
+        success: true,
+        movies: doc
+      });
+    })
+    .catch((error) => {
+      console.log('Error', error);
+    });
+})
+
 server.set("view engine", "ejs");
 
 let connection; // Aquí almacenaremos la conexión a la base de datos
+
 
 mysql
   .createConnection({
