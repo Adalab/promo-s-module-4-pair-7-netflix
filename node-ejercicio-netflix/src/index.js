@@ -17,6 +17,7 @@ const dbConnect = require("../config/connection");
 dbConnect(); //ejecuta la función
 
 const Movies = require("../models/movies");
+const Users = require('../models/users');
 
 server.post("/create", (req, res) => {
   const newMovie = req.body;
