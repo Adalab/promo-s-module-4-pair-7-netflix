@@ -11,6 +11,7 @@ import SignUp from './SignUp';
 import apiMovies from '../services/api-movies';
 import apiUser from '../services/api-user';
 import router from '../services/router';
+import ls from '../services/local-storage'
 
 const App = () => {
   // state: user
@@ -57,6 +58,12 @@ const App = () => {
       });
     }
   }, [userId]);
+
+  // useEffect(() => {
+  //   ls.set('userId', userId)
+  // }, [userId]);
+
+
 
   /*
   useEffect: obtener las películas de la usuaria.

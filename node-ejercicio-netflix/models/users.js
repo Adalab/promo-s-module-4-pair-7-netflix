@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Squema;
+const Schema = mongoose.Schema;
 
 const usersSchema = new Schema({
   user: String,
@@ -7,7 +7,6 @@ const usersSchema = new Schema({
   name: String,
   email: String,
   plan_details: String,
-  // user: { Squema.Types.ObjectId, ref: 'movies' }
 }, { collection: 'users' })
 
 const Users = mongoose.model('users', usersSchema);

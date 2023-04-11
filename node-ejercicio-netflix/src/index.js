@@ -16,8 +16,13 @@ server.listen(serverPort, () => {
 const dbConnect = require("../config/connection");
 dbConnect(); //ejecuta la función
 
+
+server.set("view engine", "ejs");
+
 const Movies = require("../models/movies");
 const Users = require('../models/users');
+const Favorites = require('../models/favorites');
+const Actors = require('../models/actors');
 
 server.post("/create", (req, res) => {
   const newMovie = req.body;
@@ -47,8 +52,37 @@ server.get("/movies_all_mongo", (req, res) => {
     });
 });
 
+server.post('/favorites-add', (req, res) => {
+  let idMovie = '6435a2e14dc6e6adbb205148';
+  let idUser = '6435912d78fb785b76cf947a';
+  const favorites = new Favorites({
+    idUser: idMovie,
+    idMovie: idUser,
+    score: req.body.score,
+  });
+  favorites
+    .save()
+    .then((docs) => {
+      res.json(docs);
+    })
+    .catch((error) => {
+      console.log('Error', error);
+    });
+});
 
-server.set("view engine", "ejs");
+server.get('/favorites-list', (req, res) => {
+  Favorites.find({
+    //   idUser: req.params.user,
+    // })
+  })
+    .populate({ path: 'movies', strictPopulate: false, select: 'title year' })
+    .then((docs) => {
+      res.json(docs);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+});
 
 let connection; // Aquí almacenaremos la conexión a la base de datos
 
@@ -75,6 +109,8 @@ mysql
   .catch((err) => {
     console.error("Error de configuración: " + err.stack);
   });
+
+
 
 server.get("/movies", (req, res) => {
   let genreFilterParam = req.query.genre;
