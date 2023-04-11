@@ -30,13 +30,11 @@ server.post("/create", (req, res) => {
 });
 
 server.get("/movies_all_mongo", (req, res) => {
-  let genreFilterParam = req.query.genre;
-  const sortFilterParam = req.query.sort;
-  if (genreFilterParam === "") {
-    genreFilterParam = "%";
-  }
-  Movies.find({})
-    //.sort({ title: 'asc' })
+  const { genre, sort } = req.query;
+  console.log(req.query)
+  const query = genre ? { genre: genre.toLocaleLowerCase() } : {};
+  Movies.find(query)
+    .sort({ title: sort === 'asc' ? 1 : -1 })
     .then((doc) => {
       res.json({
         success: true,
@@ -48,20 +46,6 @@ server.get("/movies_all_mongo", (req, res) => {
     });
 });
 
-server.get("/movies_mongo_genre/:genreValue", (req, res) => {
-  const { genreValue } = req.params;
-  Movies.find({ genre: genreValue })
-    .then((docs) => {
-      console.log(req.params);
-      res.json({
-        success: true,
-        movies: docs,
-      });
-    })
-    .catch((error) => {
-      console.log("Error", error);
-    });
-});
 
 server.set("view engine", "ejs");
 
