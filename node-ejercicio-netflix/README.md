@@ -40,7 +40,7 @@ Por favor marca a continuación los ejercicios que hayáis terminado:
 - [x] 1. Filtrar por género
 - [x] 2. Ordenar por nombre
 - [x] 3. Login
-- [ ] 4. Bonus: Mantén logueada a la usuaria
+- [x] 4. Bonus: Mantén logueada a la usuaria
 
 **4.7 Express JS III:**
 
@@ -69,7 +69,7 @@ Por favor marca a continuación los ejercicios que hayáis terminado:
 **4.10 Mongo III:**
 
 - [x] 1. Insertar Películas favoritas
-- [ ] 3. Obtener Películas favoritas
+- [x] 3. Obtener Películas favoritas
 
 **4.11 Docker:**
 

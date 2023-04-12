@@ -56,8 +56,8 @@ server.post('/favorites-add', (req, res) => {
   let idMovie = '6435a2e14dc6e6adbb205148';
   let idUser = '6435912d78fb785b76cf947a';
   const favorites = new Favorites({
-    idUser: idMovie,
-    idMovie: idUser,
+    users: idUser,
+    movies: idMovie,
     score: req.body.score,
   });
   favorites
@@ -75,7 +75,7 @@ server.get('/favorites-list', (req, res) => {
     //   idUser: req.params.user,
     // })
   })
-    .populate({ path: 'movies', strictPopulate: false, select: 'title year' })
+    .populate("users")
     .then((docs) => {
       res.json(docs);
     })

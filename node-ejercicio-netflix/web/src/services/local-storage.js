@@ -11,8 +11,15 @@ const set = (key, value) => {
   localStorage.setItem(key, JSON.stringify(value));
 };
 
+// Función que limpia todo el local storage
+const clear = () => {
+  localStorage.clear();
+
+};
+
 const objToExport = {
   get: get,
+  clear: clear,
   set: set
 };
 

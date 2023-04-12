@@ -15,7 +15,7 @@ import ls from '../services/local-storage'
 
 const App = () => {
   // state: user
-  const [userId, setUserId] = useState('');
+  const [userId, setUserId] = useState((ls.get('userId') || ''));
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
   const [userPassword, setUserPassword] = useState('');
@@ -90,6 +90,7 @@ const App = () => {
     apiUser.sendLoginToApi(loginData).then(response => {
       if (response.success === true) {
         setUserId(response.userId);
+        ls.set('userId', response.userId);
         // Si la usuaria introduce bien sus datos redireccionamos desde la página de login al inicio de la página
         router.redirect('/');
       } else {
@@ -145,8 +146,7 @@ const App = () => {
   const logout = () => {
     router.redirect('/');
     router.reload();
-    localStorage.clear();
-
+    ls.clear('userId');
   };
 
   /*
