@@ -11,7 +11,7 @@ const set = (key, value) => {
   localStorage.setItem(key, JSON.stringify(value));
 };
 
-// Función que limpia todo el local storage
+//AÑADIMOS FUNCION PARA LIMPIAR LS EN LOGOUT
 const clear = () => {
   localStorage.clear();
 

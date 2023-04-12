@@ -7,7 +7,7 @@ const moviesSchema = new Schema({
   image: String,
   category: String,
   year: String,
-}, { collection: 'movies' }) //especifico la coleccion en la que quiero conectarme
+}, { collection: 'movies' })
 
 const Movies = mongoose.model('movies', moviesSchema);
 module.exports = Movies;
