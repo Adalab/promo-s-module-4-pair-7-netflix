@@ -35,7 +35,6 @@ server.post("/create", (req, res) => {
 
 server.get("/movies_all_mongo", (req, res) => {
   const { genre, sort } = req.query;
-  console.log(req.query)
   const query = genre ? { genre: genre.toLocaleLowerCase() } : {};
   Movies.find(query)
     .sort({ title: sort === 'asc' ? 1 : -1 })
@@ -81,10 +80,8 @@ server.get('/favorites-list', (req, res) => {
 
 server.get('/movie/:movieId', (req, res) => {
   const { movieId } = req.params;
-  console.log(movieId);
   Movies.find({ _id: movieId })
     .then((docs) => {
-      console.log(docs);
       res.render('movie', docs[0]);
     })
     .catch((error) => {
@@ -92,9 +89,7 @@ server.get('/movie/:movieId', (req, res) => {
     });
 });
 
-
 //MYSQL
-
 mysql
   .createConnection({
     host: "localhost",
